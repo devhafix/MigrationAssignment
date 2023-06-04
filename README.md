@@ -177,3 +177,5 @@ Run the migration to create the "orders" table in the database:
     php artisan migrate
 ```
 That's it! We have completed the Laravel migration process.
+
+<img src="./docs/database-preview.png">

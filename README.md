@@ -1,66 +1,179 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel Migration Assignment Documentation
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This repository contains code for a Laravel migration assignment. It demonstrates the creation of migration files and the process of modifying database tables using Laravel's migration feature.
 
-## About Laravel
+## Prerequisites
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Before proceeding with the migration process, ensure that we have the following prerequisites installed:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- [PHP](https://www.php.net/manual/en/install.php) (version 8.1 or higher)
+- [Composer](https://getcomposer.org/download/)
+- [Laravel](https://laravel.com/docs/installation)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Installation
 
-## Learning Laravel
+1. Need to clone the repository in our local machine:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```shell
+    git clone https://github.com/devhafix/MigrationAssignment.git
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+2. Need to change into the project directory:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```shell
+    cd MigrationAssignment
+```
 
-## Laravel Sponsors
+3. Need to nstall the project dependencies:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+```shell
+    composer install
+```
 
-### Premium Partners
+# Migration Process
+I have followed these steps to perform the migration process:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+### Task 1: Create a new Laravel project
 
-## Contributing
+Create a new Laravel project named "MigrationAssignment" using the Laravel command-line interface:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```shell
+    laravel new MigrationAssignment
+```
 
-## Code of Conduct
+<img src="./docs/create-laravel-project.png" width="100%" alt="Create Laravel Project">
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Task 2: Create the "products" table migration
 
-## Security Vulnerabilities
+Within the project, create a new migration file named "create_products_table" responsible for creating the "products" table:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```shell
+    php artisan make:migration create_products_table --create=products
+```
 
-## License
+<img src="./docs/create-products-table.png" width="100%" alt="Create Product Table">
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Add the following code within the up() method:
+
+```php
+    public function up(): void
+    {
+        Schema::create('products', function (Blueprint $table) {
+            $table->id();
+            $table->string('name', 256);
+            $table->decimal('price',10);
+            $table->text('product_description');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrentOnUpdate();
+        });
+    }
+```
+
+### Task 3: Run the "products" table migration
+
+Run the migration to create the "products" table in the database:
+
+```shell
+    php artisan migrate
+```
+
+### Task 4: Modify the "products" table migration
+
+Modify the existing migration file "create_products_table" to add a new column called "quantity" to the "products" table:
+
+Run the following command to update and add quantity column to products table.
+
+```shell
+    php artisan migrate:rollback
+```
+
+Add the following code within the up() method, before the timestam lines:
+
+```php
+    $table->integer('quantity')->nullable();
+```
+
+```php
+    public function up(): void
+    {
+        Schema::create('products', function (Blueprint $table) {
+            $table->id();
+            $table->string('name', 256);
+            $table->decimal('price',10);
+            $table->text('product_description');
+            $table->integer('quantity')->nullable();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrentOnUpdate();
+        });
+    }
+```
+
+Run the migration to create the "products" table in the database:
+
+```shell
+    php artisan migrate
+```
+
+### Task 5: Create the "category" column migration
+
+Create a new migration file named "add_category_to_products_table" to add the "category" column to the "products" table:
+
+```shell
+    php artisan make:migration add_category_to_products_table --table=products
+```
+
+Add the following code within the up() method, before the timestamp lines:
+
+```php
+    $table->string('category', 50);
+```
+
+```php
+    public function up(): void
+    {
+        Schema::table('products', function (Blueprint $table) {
+            $table->string('category', 50);
+        });
+    }
+```
+
+### Task 6: Run the "category" column migration
+
+Run the migration to add the "category" column to the "products" table:
+
+```shell
+    php artisan migrate
+```
+
+### Task 7: Create the "orders" table migration
+
+Create a new migration file named "create_orders_table" responsible for creating the "orders" table:
+
+```shell
+    php artisan make:migration create_orders_table --create=orders
+```
+
+Add the following code within the up() method
+
+```php
+    public function up(): void
+    {
+        Schema::create('orders', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedBigInteger('product_id');
+            $table->foreign('product_id')->references('id')->on('products');
+            $table->integer('quantity');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrentOnUpdate();
+        });
+    }
+```
+
+### Task 8: Run the "orders" table migration
+
+Run the migration to create the "orders" table in the database:
+
+```shell
+    php artisan migrate
+```
+That's it! We have completed the Laravel migration process.
